@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="SG\RateBundle\Entity\Rate" table="sg_rate">
+
+        <field name="resourceId"          column="resource_id"    type="integer" />
+        <field name="resourceType"        column="resource_type"  type="string"  />
+        
+        <field name="reviewerId"          column="reviewer_id"    type="integer" nullable="true" />
+        <field name="score"               column="score"          type="integer" />
+
+        <field name="createdAt"           column="created_at"     type="datetime" />
+        <field name="updatedAt"           column="updated_at"     type="datetime" />
+
+        <!-- <many-to-one field="reviewer" target-entity="User" mapped-by="tag" > 
+                <join-columns>
+                    <join-column name="reviewer_id" referenced-column-name="id" />
+                </join-columns>
+             </many-to_one> -->
+        
+        <!-- <unique-constraints>
+                <unique-constraint columns="reviewer_id,resource_type,resource_id" name="rate_idx" />
+             </unique-constraints> -->
+    </mapped-superclass>
+
+</doctrine-mapping>
