@@ -27,8 +27,8 @@ class Configuration implements ConfigurationInterface
                     ->cannotBeEmpty()
                     ->children()
                         ->scalarNode('rate_class')->isRequired()->cannotBeEmpty()->end()
-                        ->scalarNode('min_rate_score')->defaultValue(0)->cannotBeEmpty()->end()
-                        ->scalarNode('max_rate_score')->defaultValue(5)->cannotBeEmpty()->end()
+                        ->scalarNode('min_rate_score')->defaultValue(0)->end()
+                        ->scalarNode('max_rate_score')->defaultValue(5)->end()
                     ->end()
                 ->end()
             ->end();
