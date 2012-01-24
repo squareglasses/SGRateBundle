@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace DoctrineExtensions\Rateable;
+namespace SG\RateBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\Rateable\RatingManager as BaseRatingManager;
