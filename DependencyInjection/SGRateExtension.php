@@ -24,5 +24,9 @@ class SGRateExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        
+        $container->setParameter('sg_rate.entity.rate.rate_class',     $config['model']['rate_class']);
+        $container->setParameter('sg_rate.entity.rate.min_rate_score', $config['model']['min_rate_score']);
+        $container->setParameter('sg_rate.entity.rate.max_rate_score', $config['model']['max_rate_score']);
     }
 }

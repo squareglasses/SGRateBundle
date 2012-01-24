@@ -18,11 +18,20 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sg_rateable');
+        $rootNode = $treeBuilder->root('sg_rate');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('model')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                    ->children()
+                        ->scalarNode('rate_class')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('min_rate_score')->defaultValue(0)->cannotBeEmpty()->end()
+                        ->scalarNode('max_rate_score')->defaultValue(5)->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

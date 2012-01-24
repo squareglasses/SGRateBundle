@@ -14,6 +14,8 @@
         <service id="sg_rate.rating_manager" class="%sg_rate.rating_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%sg_rate.entity.rate.class%</argument>
+            <argument>%sg_rate.entity.rate.min_rate_score%</argument>
+            <argument>%sg_rate.entity.rate.max_rate_score%</argument>
         </service>
     </services>
 
