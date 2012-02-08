@@ -1,6 +1,6 @@
 <?php
 
-namespace DoctrineExtensions\Rateable;
+namespace SG\RateBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
