@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="sg_rate.rating_manager.class">SG\RateBundle\Service\RatingManager</parameter>
         <parameter key="sg_rate.entity.rate.class">SG\RateBundle\Entity\Rate</parameter>
+        <parameter key="sg_rate.rateable_manager.class">SG\RateBundle\Service\RateableManager</parameter>
     </parameters>
 
 
@@ -16,6 +17,11 @@
             <argument>%sg_rate.entity.rate.class%</argument>
             <argument>%sg_rate.entity.rate.min_rate_score%</argument>
             <argument>%sg_rate.entity.rate.max_rate_score%</argument>
+        </service>
+        <service id="sg_rate.rateable_manager" class="%sg_rate.rateable_manager.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="event_dispatcher" />
+            <argument>%sg.rateable_manager.rateables%</argument>
         </service>
     </services>
 

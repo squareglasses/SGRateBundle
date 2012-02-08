@@ -28,5 +28,11 @@ class SGRateExtension extends Extension
         $container->setParameter('sg_rate.entity.rate.class',     $config['model']['rate_class']);
         $container->setParameter('sg_rate.entity.rate.min_rate_score', $config['model']['min_rate_score']);
         $container->setParameter('sg_rate.entity.rate.max_rate_score', $config['model']['max_rate_score']);
+        
+        $rateables = array();
+        foreach($config['rateables'] as $rateable) {
+            $rateables[$rateable['type']] = $rateable['class'];
+        }
+        $container->setParameter('sg.rateable_manager.rateables' , $rateables);
     }
 }
