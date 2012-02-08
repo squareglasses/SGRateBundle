@@ -46,20 +46,28 @@ class RateableManager
         $this->parameters   = $parameters;
     }
     
-    public function findResourceByIdAndType($rateable_id, $rateable_type)
+    /**
+     * Get Rateable resource with its type and id (look for repository)
+     * 
+     * @param string $rateable_id
+     * @param string $rateable_type
+     * @return Rateable rateable resource
+     */
+    public function findRateableByIdAndType($rateable_id, $rateable_type)
     {
-        return $this->em->getRepository($this->getResourceClassByType($resource_type))->find($resource_id);
+        return $this->em->getRepository($this->getResourceClassByType($rateable_type))->find($rateable_id);
     }
     
     /**
-     *
+     * Retrieve class with namespace for a given type
+     * 
      * @param type $type
-     * @return type 
+     * @return string 
      */
     public function getResourceClassByType($type)
     {
         if (isset($this->parameters['rateables'][$type])) {
-            // throw new Exception
+            // throw new Config Exception (Already fired by Configuration mecanism ?)
         }
         
         return $this->parameters['rateables'][$type];

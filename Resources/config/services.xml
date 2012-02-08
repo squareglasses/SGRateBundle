@@ -21,7 +21,9 @@
         <service id="sg_rate.rateable_manager" class="%sg_rate.rateable_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher" />
-            <argument>%sg.rateable_manager.rateables%</argument>
+            <argument type="collection">
+                <argument key="rateables">%sg.rateable_manager.rateables%</argument>
+            </argument>
         </service>
     </services>
 
