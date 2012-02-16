@@ -41,6 +41,8 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                     ->cannotBeEmpty()
                                 ->end()
+                                ->scalarNode('max_rate_score')->end()
+                                ->scalarNode('min_rate_score')->end()
                             ->end()
                         ->end()
                     ->end()

@@ -66,10 +66,10 @@ class RateableManager
      */
     public function getResourceClassByType($type)
     {
-        if (isset($this->parameters['rateables'][$type])) {
+        if (isset($this->parameters['rateables'][$type]['class'])) {
             // throw new Config Exception (Already fired by Configuration mecanism ?)
         }
         
-        return $this->parameters['rateables'][$type];
+        return $this->parameters['rateables'][$type]['class'];
     }
 }

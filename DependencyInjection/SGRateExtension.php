@@ -31,7 +31,7 @@ class SGRateExtension extends Extension
         
         $rateables = array();
         foreach($config['model']['rateables'] as $rateable) {
-            $rateables[$rateable['type']] = $rateable['class'];
+            $rateables[$rateable['type']] = $rateable;
         }
         $container->setParameter('sg.rateable_manager.rateables' , $rateables);
     }
