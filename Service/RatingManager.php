@@ -20,5 +20,87 @@ use DoctrineExtensions\Rateable\RatingManager as BaseRatingManager;
  */
 class RatingManager extends BaseRatingManager
 {
+    protected $dispatcher;
+    
+    public function __construct(EntityManager $em, $class = null, $minRateScore = 1, $maxRateScore = 5, EventDispatcherInterface $dispatcher = null)
+    {
+        $this->em = $em;
+        $this->class = $class ?: 'DoctrineExtensions\Rateable\Entity\Rate';
+        $this->minRateScore = $minRateScore;
+        $this->maxRateScore = $maxRateScore;
+        $this->dispatcher   = $dispatcher;
+    }
   
+    /**
+     * Adds a new rate.
+     *
+     * @param Rateable  $resource   The resource object
+     * @param Reviewer  $reviewer   The reviewer object
+     * @param integer   $rateScore  The rate score
+     *
+     * @return void
+     */
+    public function addRate(Rateable $resource, Reviewer $reviewer, $rateScore, $save = true)
+    {
+        if (!$reviewer->canAddRate($resource)) {
+            throw new Exception\PermissionDeniedException('This reviewer cannot add a rate for this resource');
+        }
+
+        if (!$this->isValidRateScore($rateScore)) {
+            throw new Exception\InvalidRateScoreException($this->minRateScore, $this->maxRateScore);
+        }
+
+        if ((!$this->multiRating || $this->timeBeforeNewRating > 0) && $lastRate = $this->findRate($resource, $reviewer)) {
+            if (!$this->multiRating) {
+              throw new Exception\ResourceAlreadyRatedException('The reviewer has already rated this resource');
+            }
+            elseif( $lastRate->getCreatedAt()->getTimestamp() >  time()-$this->getTimeBeforeNewRating()) {
+              throw new Exception\ResourceAlreadyRatedInPeriodException('The reviewer must wait before re-rate this resource');
+            }
+        }
+
+        $rate = $this->createRate();
+        $rate->setResource($resource);
+        $rate->setReviewer($reviewer);
+        $rate->setScore($rateScore);
+
+        $resource->setRatingVotes($resource->getRatingVotes() + 1);
+        $resource->setRatingTotal($resource->getRatingTotal() + $rateScore);
+
+        if ($save) {
+            $this->saveEntity($rate);
+            $this->saveEntity($resource);
+        }
+
+        return $rate;
+    }
+
+    /**
+     * Removes an existant rate.
+     * Warning : This method only works fine with single Rating
+     * @todo : add method to remove All Rate, or on Rate by id
+     *
+     * @param Rateable  $resource   The resource object
+     * @param Reviewer  $reviewer   The reviewer object
+     *
+     * @return void
+     */
+    public function removeRate(Rateable $resource, Reviewer $reviewer)
+    {
+        if (!$reviewer->canRemoveRate($resource)) {
+            throw new Exception\PermissionDeniedException('This reviewer cannot remove his rate for this resource');
+        }
+
+        if (!($rate = $this->findRate($resource, $reviewer))) {
+            throw new Exception\NotFoundRateException('Unable to find rate object');
+        }
+
+        $resource->setRatingVotes($resource->getRatingVotes() - 1);
+        $resource->setRatingTotal($resource->getRatingTotal() - $rate->getScore());
+
+        $this->em->remove($rate);
+        $this->em->flush();
+
+        $this->saveEntity($resource);
+    }
 }

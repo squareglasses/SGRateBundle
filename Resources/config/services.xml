@@ -17,6 +17,7 @@
             <argument>%sg_rate.entity.rate.class%</argument>
             <argument>%sg_rate.entity.rate.min_rate_score%</argument>
             <argument>%sg_rate.entity.rate.max_rate_score%</argument>
+            <argument type="service" id="event_dispatcher" />
         </service>
         <service id="sg_rate.rateable_manager" class="%sg_rate.rateable_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
