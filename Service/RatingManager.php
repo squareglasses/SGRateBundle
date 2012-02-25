@@ -13,8 +13,10 @@ namespace SG\RateBundle\Service;
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\Rateable\RatingManager as BaseRatingManager;
 use SG\RateBundle\Event\RateEvent;
-use DoctrineExtensions\Rateable\Reviewer;
 use DoctrineExtensions\Rateable\Rateable;
+use DoctrineExtensions\Rateable\Reviewer;
+use DoctrineExtensions\Rateable\Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * RatingManager.
@@ -47,7 +49,7 @@ class RatingManager extends BaseRatingManager
     {
         $rate = parent::addRate($resource, $reviewer, $rateScore, $save);
         
-        $this->dispatcher->dispatch(RateEvent::RATE_POST_PERSIST, new RateEvent($rate));
+        $this->dispatcher->dispatch(RateEvent::RATE_POST_PERSIST, new RateEvent($resource,  $rate));
 
         return $rate;
     }

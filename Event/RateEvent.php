@@ -4,6 +4,7 @@ namespace SG\RateBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event as BaseEvent;
 use SG\RateBundle\Entity\Rate;
+use DoctrineExtensions\Rateable\Rateable;
 
 /**
  * Description of RatingEvent
