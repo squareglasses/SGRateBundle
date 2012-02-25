@@ -13,6 +13,8 @@ namespace SG\RateBundle\Service;
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\Rateable\RatingManager as BaseRatingManager;
 use SG\RateBundle\Event\RateEvent;
+use DoctrineExtensions\Rateable\Reviewer;
+use DoctrineExtensions\Rateable\Rateable;
 
 /**
  * RatingManager.
