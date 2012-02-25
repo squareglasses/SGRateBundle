@@ -12,6 +12,7 @@ namespace SG\RateBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\Rateable\RatingManager as BaseRatingManager;
+use SG\RateBundle\Event\RateEvent;
 
 /**
  * RatingManager.
@@ -42,35 +43,9 @@ class RatingManager extends BaseRatingManager
      */
     public function addRate(Rateable $resource, Reviewer $reviewer, $rateScore, $save = true)
     {
-        if (!$reviewer->canAddRate($resource)) {
-            throw new Exception\PermissionDeniedException('This reviewer cannot add a rate for this resource');
-        }
-
-        if (!$this->isValidRateScore($rateScore)) {
-            throw new Exception\InvalidRateScoreException($this->minRateScore, $this->maxRateScore);
-        }
-
-        if ((!$this->multiRating || $this->timeBeforeNewRating > 0) && $lastRate = $this->findRate($resource, $reviewer)) {
-            if (!$this->multiRating) {
-              throw new Exception\ResourceAlreadyRatedException('The reviewer has already rated this resource');
-            }
-            elseif( $lastRate->getCreatedAt()->getTimestamp() >  time()-$this->getTimeBeforeNewRating()) {
-              throw new Exception\ResourceAlreadyRatedInPeriodException('The reviewer must wait before re-rate this resource');
-            }
-        }
-
-        $rate = $this->createRate();
-        $rate->setResource($resource);
-        $rate->setReviewer($reviewer);
-        $rate->setScore($rateScore);
-
-        $resource->setRatingVotes($resource->getRatingVotes() + 1);
-        $resource->setRatingTotal($resource->getRatingTotal() + $rateScore);
-
-        if ($save) {
-            $this->saveEntity($rate);
-            $this->saveEntity($resource);
-        }
+        $rate = parent::addRate($resource, $reviewer, $rateScore, $save);
+        
+        $this->dispatcher->dispatch(RateEvent::RATE_POST_PERSIST, new RateEvent($rate));
 
         return $rate;
     }
@@ -95,6 +70,8 @@ class RatingManager extends BaseRatingManager
             throw new Exception\NotFoundRateException('Unable to find rate object');
         }
 
+        $this->dispatcher->dispatch(RateEvent::RATE_PRE_DELETE, new RateEvent($resource, $rate));
+        
         $resource->setRatingVotes($resource->getRatingVotes() - 1);
         $resource->setRatingTotal($resource->getRatingTotal() - $rate->getScore());
 
@@ -102,5 +79,7 @@ class RatingManager extends BaseRatingManager
         $this->em->flush();
 
         $this->saveEntity($resource);
+        
+        $this->dispatcher->dispatch(RateEvent::RATE_POST_DELETE, new RateEvent($resource));
     }
 }

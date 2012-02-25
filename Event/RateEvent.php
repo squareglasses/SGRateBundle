@@ -52,10 +52,14 @@ class RateEvent extends BaseEvent
     const RATE_POST_DELETE    = 'sg_comment.rate.post_delete';
 
     /**
-     *
      * @var type 
      */
     protected $rate;
+    
+    /**
+     * @var type 
+     */
+    protected $resource;
     
     /**
      * Indicates if persisting of the comment shold be aborted 
@@ -69,9 +73,10 @@ class RateEvent extends BaseEvent
      *
      * @param Rate $rate 
      */
-    public function __construct(Rate $rate)
+    public function __construct(Rateable $resource, Rate $rate = null)
     {
-        $this->rate = $rate;
+        $this->resource = $resource;
+        $this->rate     = $rate;
     }
     
     /**
@@ -81,6 +86,15 @@ class RateEvent extends BaseEvent
     public function getRate()
     {
         return $this->rate;
+    }
+    
+    /**
+     * Return resource for this event
+     * @return Rateable 
+     */
+    public function getResource()
+    {
+        return $this->resource;
     }
     
     /**
