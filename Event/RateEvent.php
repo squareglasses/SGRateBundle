@@ -20,37 +20,37 @@ class RateEvent extends BaseEvent
      * 
      * @var string
      */
-    const RATE_PRE_PERSIST    = 'sg_comment.rate.pre_persist';
+    const RATE_PRE_PERSIST    = 'sg_rate.rate.pre_persist';
     
     /**
      * @var string
      */
-    const RATE_POST_PERSIST   = 'sg_comment.rate.post_persist';
+    const RATE_POST_PERSIST   = 'sg_rate.rate.post_persist';
     
     /**
      * @var string
      */
-    const RATE_PRE_UPDATE     = 'sg_comment.rate.pre_update';
+    const RATE_PRE_UPDATE     = 'sg_rate.rate.pre_update';
     
     /**
      * @var string
      */
-    const RATE_POST_UPDATE    = 'sg_comment.rate.post_update';
+    const RATE_POST_UPDATE    = 'sg_rate.rate.post_update';
     
     /**
      * @var string
      */
-    const RATE_CREATE         = 'sg_comment.rate.create';
+    const RATE_CREATE         = 'sg_rate.rate.create';
     
     /**
      * @var string
      */
-    const RATE_PRE_DELETE     = 'sg_comment.rate.pre_delete';
+    const RATE_PRE_DELETE     = 'sg_rate.rate.pre_delete';
     
     /**
      * @var string
      */
-    const RATE_POST_DELETE    = 'sg_comment.rate.post_delete';
+    const RATE_POST_DELETE    = 'sg_rate.rate.post_delete';
 
     /**
      * @var type 
@@ -63,7 +63,7 @@ class RateEvent extends BaseEvent
     protected $resource;
     
     /**
-     * Indicates if persisting of the comment shold be aborted 
+     * Indicates if persisting of the rate should be aborted 
      * (only on a RATE_PRE_PERSIST)
      * 
      * @var type 

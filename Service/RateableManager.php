@@ -25,11 +25,6 @@ class RateableManager
     protected $dispatcher;
     
     /**
-     * @var CommentInterface
-     */
-    protected $comment;
-    
-    /**
      * @var array
      */
     protected $parameters;
